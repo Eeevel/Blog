@@ -21,6 +21,14 @@ configure do
       "created_date" DATE,
       "content" TEXT
     )'
+
+  @db.execute 'CREATE TABLE IF NOT EXISTS "Comments"
+    (
+      "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+      "created_date" DATE,
+      "content" TEXT,
+      "post_id" INTEGER
+    )'
 end
 
 get '/' do
@@ -31,16 +39,6 @@ end
 
 get '/new' do
   erb :new
-end
-
-get '/post/:id' do
-  # Получение параметра из URL
-  id = params[:id]
-
-  results = @db.execute 'SELECT * FROM Posts WHERE ID = ?', [id]
-  @row = results[0]
-
-  erb :post
 end
 
 post '/new' do
@@ -54,4 +52,21 @@ post '/new' do
   @db.execute 'INSERT INTO Posts (content, created_date) VALUES(?, datetime())', [content]
 
   redirect to '/'
+end
+
+get '/post/:id' do
+  # Получение параметра из URL
+  id = params[:id]
+
+  results = @db.execute 'SELECT * FROM Posts WHERE ID = ?', [id]
+  @row = results[0]
+
+  erb :post
+end
+
+post '/post/:id' do
+  id = params[:id]
+  content = params[:content]
+
+  erb content
 end
