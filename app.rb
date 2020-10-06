@@ -58,8 +58,12 @@ get '/post/:id' do
   # Получение параметра из URL
   id = params[:id]
 
+  # Получаем список постов
   results = @db.execute 'SELECT * FROM Posts WHERE ID = ?', [id]
   @row = results[0]
+
+  # Выбираем комментарии для поста
+  @comments = @db.execute 'SELECT * FROM Comments WHERE post_id = ? ORDER BY ID', [id]
 
   erb :post
 end
