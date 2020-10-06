@@ -33,6 +33,16 @@ get '/new' do
   erb :new
 end
 
+get '/post/:id' do
+  # Получение параметра из URL
+  id = params[:id]
+
+  results = @db.execute 'SELECT * FROM Posts WHERE ID = ?', [id]
+  @row = results[0]
+
+  erb :post
+end
+
 post '/new' do
   content = params[:content]
 
