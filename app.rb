@@ -12,5 +12,7 @@ get '/new' do
 end
 
 post '/new' do
+  content = params[:content]
+
   erb :new
 end
